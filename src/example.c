@@ -21,12 +21,13 @@ FOV 91.1
 
 */
 
+/* Replace this with your own path to fileformat.sff, or whichever sff file you want. */
+#define FILE_PATH "C:\\Users\\john\\Desktop\\fileformat.sff"
+
 int main() {
 
-	SFFFILE file = load_sff_file("C:\\Users\\JohnSmith\\Desktop\\fileformat.txt");
+	SFFFILE file = load_sff_file(FILE_PATH);
 
-	printf("INFO: Getting value from the file!\n");
-	/* TODO: Passing in an invalid key causes a crash, fix. */
 	int value = sff_get_int("players_alive", &file);
 	sff_free(&file);
 	printf("%d\n", value);

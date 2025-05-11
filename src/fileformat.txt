@@ -1,0 +1,5 @@
+# This is a comment, and it should be ignored!
+
+enemies_killed 11.1032
+
+players_alive 100

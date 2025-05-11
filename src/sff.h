@@ -69,7 +69,7 @@ static SFFFILE load_sff_file(const char* file_path) {
 	}
 
 	/* FIRST PASS - PARSE FILE */
-	printf("INFO: Beginning First Pass!\n");
+	//printf("INFO: Beginning First Pass!\n");
 
 	char* file_ptr = file.filebuf;
 	char* file_end = file.filebuf + file_size;
@@ -92,8 +92,8 @@ static SFFFILE load_sff_file(const char* file_path) {
 	}
 
 	file.parsed_buf[file.parsed_len] = '\0';
-	printf("%s\n", file.parsed_buf);
-	printf("INFO: First Pass Completed!\n");
+	//printf("%s\n", file.parsed_buf);
+	//printf("INFO: First Pass Completed!\n");
 
 	return file;
 }
