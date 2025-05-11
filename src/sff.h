@@ -13,7 +13,6 @@ static float sff_get_float(const char* key, SFFFILE* file);
 static int sff_get_int(const char* key, SFFFILE* file);
 static int sff_free(const SFFFILE* file);
 
-
 #ifdef SFF_IMPLEMENTATION
 
 #define IS_CAPITAL_LETTER(ch)  (((ch) >= 'A') && ((ch) <= 'Z'))
@@ -26,7 +25,6 @@ static int sff_free(const SFFFILE* file);
 #define IS_HYPHEN(ch)  ((ch) == '-')
 #define IS_DOT(ch) ((ch) == '.')
 #define ARE_CHARS_EQUAL(ch1, ch2) ((ch1) == (ch2))
-
 
 static SFFFILE load_sff_file(const char* file_path) {
 	SFFFILE file = { 0 };
@@ -99,7 +97,6 @@ static SFFFILE load_sff_file(const char* file_path) {
 
 	return file;
 }
-
 
 static float sff_get_float(const char* key, SFFFILE* file) {
 
@@ -217,7 +214,6 @@ static int sff_free(const SFFFILE* file) {
     free(file->parsed_buf);
     return 0;
 }
-
 
 #undef IS_CAPITAL_LETTER
 #undef IS_LOWER_CASE_LETTER
