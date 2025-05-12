@@ -8,18 +8,24 @@ typedef struct {
 	size_t parsed_len;
 } SFFFILE;
 
+#ifdef SFF_STATIC
+#define SFFAPI static
+#else
+#define SFFAPI extern
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-static SFFFILE load_sff_file(const char* file_path);
-static float sff_get_float(const char* key, SFFFILE* file);
-static int sff_get_int(const char* key, SFFFILE* file);
-static int sff_free(const SFFFILE* file);
+SFFAPI SFFFILE load_sff_file(const char* file_path);
+SFFAPI float sff_get_float(const char* key, SFFFILE* file);
+SFFAPI int sff_get_int(const char* key, SFFFILE* file);
+SFFAPI int sff_free(const SFFFILE* file);
 
 #ifdef __cplusplus
 }
 #endif
+
 
 #ifdef SFF_IMPLEMENTATION
 
@@ -34,7 +40,7 @@ static int sff_free(const SFFFILE* file);
 #define IS_DOT(ch) ((ch) == '.')
 #define ARE_CHARS_EQUAL(ch1, ch2) ((ch1) == (ch2))
 
-static SFFFILE load_sff_file(const char* file_path) {
+SFFAPI SFFFILE load_sff_file(const char* file_path) {
 	SFFFILE file = { 0 };
 
 	/* OPEN FILE */
@@ -106,7 +112,7 @@ static SFFFILE load_sff_file(const char* file_path) {
 	return file;
 }
 
-static float sff_get_float(const char* key, SFFFILE* file) {
+SFFAPI float sff_get_float(const char* key, SFFFILE* file) {
 
     char* keyptr = key;
     char* fileptr = file->parsed_buf;
@@ -162,7 +168,7 @@ static float sff_get_float(const char* key, SFFFILE* file) {
 
 }
 
-static int sff_get_int(const char* key, SFFFILE* file) {
+SFFAPI int sff_get_int(const char* key, SFFFILE* file) {
 
 	char* keyptr = key;
 	char* fileptr = file->parsed_buf;
@@ -213,7 +219,7 @@ static int sff_get_int(const char* key, SFFFILE* file) {
 
 }
 
-static int sff_free(const SFFFILE* file) {
+SFFAPI int sff_free(const SFFFILE* file) {
     if (!file->filebuf || !file->parsed_buf) {
         fprintf(stderr, "ERROR: tried to free SFF file that was either not created or already freed!\n");
         exit(-1);
