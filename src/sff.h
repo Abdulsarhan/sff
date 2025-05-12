@@ -8,10 +8,18 @@ typedef struct {
 	size_t parsed_len;
 } SFFFILE;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 static SFFFILE load_sff_file(const char* file_path);
 static float sff_get_float(const char* key, SFFFILE* file);
 static int sff_get_int(const char* key, SFFFILE* file);
 static int sff_free(const SFFFILE* file);
+
+#ifdef __cplusplus
+}
+#endif
 
 #ifdef SFF_IMPLEMENTATION
 
