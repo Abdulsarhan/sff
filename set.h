@@ -6,28 +6,28 @@ typedef struct {
 	char* filebuf;
 	char* parsed_buf;
 	size_t parsed_len;
-} SFFFILE;
+} SETFILE;
 
 #ifdef SFF_STATIC
 #define SFFAPI static
 #else
 #define SFFAPI extern
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-SFFAPI SFFFILE load_sff_file(const char* file_path);
-SFFAPI float sff_get_float(const char* key, SFFFILE* file);
-SFFAPI int sff_get_int(const char* key, SFFFILE* file);
-SFFAPI int sff_free(const SFFFILE* file);
+SFFAPI SETFILE set_load_file(const char* file_path);
+SFFAPI float set_get_float(const char* key, SETFILE file);
+SFFAPI int set_get_int(const char* key, SETFILE file);
+SFFAPI int set_free(SETFILE file);
 
 #ifdef __cplusplus
 }
 #endif
 
-
-#ifdef SFF_IMPLEMENTATION
+#ifdef SET_IMPLEMENTATION
 
 #define IS_CAPITAL_LETTER(ch)  (((ch) >= 'A') && ((ch) <= 'Z'))
 #define IS_LOWER_CASE_LETTER(ch)  (((ch) >= 'a') && ((ch) <= 'z'))
@@ -40,8 +40,8 @@ SFFAPI int sff_free(const SFFFILE* file);
 #define IS_DOT(ch) ((ch) == '.')
 #define ARE_CHARS_EQUAL(ch1, ch2) ((ch1) == (ch2))
 
-SFFAPI SFFFILE load_sff_file(const char* file_path) {
-	SFFFILE file = { 0 };
+SFFAPI SETFILE set_load_file(const char* file_path) {
+	SETFILE file = { 0 };
 
 	/* OPEN FILE */
 	FILE* handle = fopen(file_path, "rb");
@@ -112,10 +112,10 @@ SFFAPI SFFFILE load_sff_file(const char* file_path) {
 	return file;
 }
 
-SFFAPI float sff_get_float(const char* key, SFFFILE* file) {
+SFFAPI float set_get_float(const char* key, SETFILE file) {
 
     char* keyptr = key;
-    char* fileptr = file->parsed_buf;
+    char* fileptr = file.parsed_buf;
     char* endptr = NULL;
     int keylen = 0;
     while (*keyptr != '\0') {
@@ -156,7 +156,7 @@ SFFAPI float sff_get_float(const char* key, SFFFILE* file) {
             }
             
         }
-        if ((fileptr - file->parsed_buf) > file->parsed_len) { // Prevents fileptr from going out of bounds if the key is bad.
+        if ((fileptr - file.parsed_buf) > file.parsed_len) { // Prevents fileptr from going out of bounds if the key is bad.
             fprintf(stderr, "ERROR: Invalid Key!\n");
             return 0xBADC0DE;
             break;
@@ -168,10 +168,10 @@ SFFAPI float sff_get_float(const char* key, SFFFILE* file) {
 
 }
 
-SFFAPI int sff_get_int(const char* key, SFFFILE* file) {
+SFFAPI int set_get_int(const char* key, SETFILE file) {
 
 	char* keyptr = key;
-	char* fileptr = file->parsed_buf;
+	char* fileptr = file.parsed_buf;
 	int keylen = 0;
 	while (*keyptr != '\0') {
 		keylen++;
@@ -207,7 +207,7 @@ SFFAPI int sff_get_int(const char* key, SFFFILE* file) {
 			}
 
 		}
-		if ((fileptr - file->parsed_buf) > file->parsed_len) { // Prevents fileptr from going out of bounds if the key is bad.
+		if ((fileptr - file.parsed_buf) > file.parsed_len) { // Prevents fileptr from going out of bounds if the key is bad.
 			fprintf(stderr, "ERROR: Invalid Key!\n");
 			return 0xBADC0DE;
 			break;
@@ -219,13 +219,13 @@ SFFAPI int sff_get_int(const char* key, SFFFILE* file) {
 
 }
 
-SFFAPI int sff_free(const SFFFILE* file) {
-    if (!file->filebuf || !file->parsed_buf) {
+SFFAPI int set_free(SETFILE file) {
+    if (!file.filebuf || !file.parsed_buf) {
         fprintf(stderr, "ERROR: tried to free SFF file that was either not created or already freed!\n");
         exit(-1);
     }
-    free(file->filebuf);
-    free(file->parsed_buf);
+    free(file.filebuf);
+    free(file.parsed_buf);
     return 0;
 }
 
