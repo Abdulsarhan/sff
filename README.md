@@ -1,4 +1,4 @@
-# SET File Format.
+# C(onfig) File Format.
 
 Just a simple key-value pair file format that also supports comments.
 SET stands for settings. I made this format so that you can easily save and load settings from a file.
@@ -36,16 +36,16 @@ is.fullscreen # Can't have comments in between key-value pairs. yes_is_fullscree
 ```C
 #include <stdio.h>
 #include <stdbool.h>
-#define SET_IMPLEMENTATION
-#include "set.h"
+#define CFILE_IMPLEMENTATION
+#include "cfile.h"
 
 int main() {
-    SETFILE file = set_load_file("C:\\Users\\JohnDoe\\Desktop\\settings.set");
+    CFILE file = cfile_load("C:\\Users\\JohnDoe\\Desktop\\settings.set");
 
-    int screen_width = set_get_int("screen_width", file);
-	int screen_height = set_get_int("screen_height", file);
-    bool fullscreen = set_get_int("is_fullscreen", file);
-	float mousesens = set_get_float("mouse_sens", file);
+    int screen_width = cfile_get_int("screen_width", file);
+	int screen_height = cfile_get_int("screen_height", file);
+    bool fullscreen = cfile_get_int("is_fullscreen", file);
+	float mousesens = cile_get_float("mouse_sens", file);
 	
     printf("screen_width: %d, screen_height: %d , %d", "%f", screen_width, screen_height, fullscreen, mousesens);
     set_free(file);
