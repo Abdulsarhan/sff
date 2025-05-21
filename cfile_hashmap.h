@@ -170,6 +170,10 @@ CFILEAPI int cfile_load(CFILE* file, const char* filename) {
         // Trim CR
         line[strcspn(line, "\r")] = '\0';
 
+        // strip inline comments
+        char* hash = strchr(line, '#');
+        if (hash) *hash = '\0';
+
         // Skip comments and empty lines
         if (line[0] == '#' || line[0] == '\0') {
             line = strtok(NULL, "\n");

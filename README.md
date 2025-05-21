@@ -1,7 +1,7 @@
 # C(onfig) File Format.
 
 Just a simple key-value pair file format that also supports comments.
-SET stands for settings. I made this format so that you can easily save and load settings from a file.
+I made this format so that you can have a simple config file that just works.
 
 ## File Syntax
 
@@ -9,7 +9,6 @@ SET stands for settings. I made this format so that you can easily save and load
 # A valid key can contain: letters, hyphens and underscores. Other kinds of characters are not permitted to be used in keys.
 # And a value can be either a 32 bit signed int or a 32 bit float, which is big enough for most use cases.
 # Ints can easily convert to bools, so you can convert the int to a bool if you want a bool.
-# I might add strings in the future, but that's about it.
 # The key-value pairs can have as few or as many spaces as you want. You can forgo spaces alltogether.
 
 Basic Syntax:
