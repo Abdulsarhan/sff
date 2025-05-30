@@ -193,6 +193,7 @@ CFILEAPI int cfile_save(const char* key, const char* value, const char* file_pat
     fclose(out);
     return 0;
 }
+
 CFILEAPI CFILE cfile_load(const char* file_path) {
     CFILE file = { 0 };
 
@@ -235,33 +236,41 @@ CFILEAPI CFILE cfile_load(const char* file_path) {
         exit(EXIT_FAILURE);
     }
 
-    /* FIRST PASS - PARSE FILE */
-    //printf("INFO: Beginning First Pass!\n");
-
+    /* FIRST PASS */
     char* file_ptr = file.filebuf;
     char* file_end = file.filebuf + file_size;
 
     while (file_ptr < file_end) {
-        if (*file_ptr == '#') {
-            while (file_ptr < file_end && *file_ptr != '\n') file_ptr++;
-            if (file_ptr < file_end) file_ptr++;
-        }
-        else if (IS_END_OF_LINE(*file_ptr) || IS_WHITE_SPACE(*file_ptr)) {
+        // Skip leading whitespace and blank lines
+        while (file_ptr < file_end && (IS_WHITE_SPACE(*file_ptr) || IS_END_OF_LINE(*file_ptr))) {
             file_ptr++;
         }
-        else if (IS_LETTER(*file_ptr) || IS_NUMBER(*file_ptr) || IS_UNDERSCORE(*file_ptr)
-            || IS_HYPHEN(*file_ptr) || IS_DOT(*file_ptr) || IS_DOUBLEQUOTES(*file_ptr)) {
-            file.parsed_buf[file.parsed_len++] = *file_ptr++;
+
+        // Parse each line
+        while (file_ptr < file_end && !IS_END_OF_LINE(*file_ptr)) {
+            if (*file_ptr == '#') {
+                // Inline comment: skip to end of line
+                while (file_ptr < file_end && !IS_END_OF_LINE(*file_ptr)) {
+                    file_ptr++;
+                }
+                break; // done with this line
+            }
+
+            if (IS_LETTER(*file_ptr) || IS_NUMBER(*file_ptr) || IS_UNDERSCORE(*file_ptr)
+                || IS_HYPHEN(*file_ptr) || IS_DOT(*file_ptr) || IS_DOUBLEQUOTES(*file_ptr)) {
+                file.parsed_buf[file.parsed_len++] = *file_ptr;
+            }
+
+            file_ptr++;
         }
-        else {
+
+        // Skip trailing newline chars
+        while (file_ptr < file_end && IS_END_OF_LINE(*file_ptr)) {
             file_ptr++;
         }
     }
-    // file.parsed_buf contains the file, but without any new lines or white spaces.
-    file.parsed_buf[file.parsed_len] = '\0';
-    //printf("%s\n", file.parsed_buf);
-    //printf("INFO: First Pass Completed!\n");
 
+    file.parsed_buf[file.parsed_len] = '\0';
     return file;
 }
 
